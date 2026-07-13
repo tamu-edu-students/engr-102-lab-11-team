@@ -21,28 +21,28 @@ First, take a look at the file provided to you named [scanned_passports.txt](sca
 - `pid` – Passport ID
 - `cid` – Country ID
 
-Data for each passport is stored as a sequence of `key:value` pairs separated by a space or newline, and each passport scan is separated by a blank line. A valid passport must contain all fields, except for birth year which is optional. For example,
+Data for each passport is stored as a sequence of `key:value` pairs separated by a space or newline, and each passport scan is separated by a blank line. A valid passport must contain all fields, except for passport ID which is optional. For example,
 
 ```
-ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
-byr:1937 iyr:2017 cid:147 hgt:183cm
+ecl:gry pid:860033327 eyr:2029 hcl:#fffffd
+byr:1937 iyr:2019 cid:147 hgt:183cm
 ```
 
 is valid because all eight fields are present. However, the passport
 
 ```
-hgt:189cm byr:1987 pid:572028668 iyr:2014 hcl:#623a2f
-eyr:2028 ecl:amb
+hgt:189cm byr:1987 pid:572028668 iyr:2018 hcl:#623a2f
+eyr:2030 ecl:amb
 ```
 
 is NOT valid because it is missing `cid`, the Country ID. The passport
 
 ```
 cid:532 iyr:2017 hgt:154cm eyr:2031
-pid:923956026 hcl:#12fe04 ecl:amb
+byr:1941 hcl:#12fe04 ecl:amb
 ```
 
-IS valid because the only missing field is `byr`, the birth year field, which is optional. 
+IS valid because the only missing field is `pid`, the passport ID field, which is optional. 
 
 ### Part A
 **BEFORE WRITING ANY CODE** create a document named `passport_checker_planning.pdf` that includes a hierarchy for Part A and five (5) test cases. Your test cases should be NEW and not found in the provided files. **AFTER** you plan your program, write the code.
@@ -57,11 +57,11 @@ There are ??? valid passports
 
 Example `valid_passports.txt` file:
 ```
-iyr:2021 cid:166 hgt:58in pid:05097983
-eyr:2023 ecl:oth byr:1917 hcl:#ed7602
+hgt:69in iyr:2019 byr:1941 pid:956152259 ecl:hzl cid:424
+eyr:2029 hcl:#0e9c75
 
-byr:1993 eyr:2029 hcl:#f4e78b hgt:58in iyr:2015 ecl:brn
-cid:887 pid:739307976
+hcl:#649082
+eyr:2032 pid:713381131 byr:1967 iyr:2026 ecl:hzl hgt:184cm cid:021
 
 ...
 ```
@@ -71,15 +71,15 @@ cid:887 pid:739307976
 <summary>Click to reveal!</summary>
 The security line is now moving at lightning speed! But now the TSA agents are worried that some of the "valid" passports are actually invalid. It turns out that each of those required fields has rules about what values are valid.
 
-- `byr` – Birth year – not required
-- `iyr` – Issue year – four digits, between 2015 and 2025, inclusive
-- `eyr` – Expiration year – four digits, between 2025 and 2035, inclusive
+- `byr` – Birth year – four digits, between 1922 and 2010, inclusive
+- `iyr` – Issue year – four digits, between 2016 and 2026, inclusive
+- `eyr` – Expiration year – four digits, between 2026 and 2036, inclusive
 - `hgt` – Height – a number followed by either `cm` or `in`
   - If `cm`, the number must be between 150 and 193, inclusive
   - If `in`, the number must be between 59 and 76, inclusive
 - `hcl` – Hair color – a `#` followed by exactly 6 characters (`0`-`9` or `a`-`f`)
 - `ecl` – Eye color – exactly one of the following: `amb`, `blu`, `brn`, `gry`, `grn`, `hzl`, `oth`
-- `pid` – Passport ID – a nine-digit number, including leading zeroes
+- `pid` – Passport ID – not required
 - `cid` – Country ID – a three-digit number, NOT including leading zeroes
 
 **BEFORE WRITING ANY CODE** for Part B, add to your planning document a hierarchy for Part B and five (5) NEW test cases based on the new criteria. **AFTER** you plan your program, write the code.
@@ -96,9 +96,9 @@ Write a program named `passport_checker2.py` that takes as input from the user a
 
 4. **I can't get my code to pass the 4 point file created correctly test case. Do I get the points anyway?** No! This part of the lab is fully autograded, so your grade is whatever you see on Gradescope. We will NOT run your code or manually change your grade. If you are struggling to pass this test case, check the format of your file. It needs to look EXACTLY like the input file, but with all of the non valid passports removed. That means valid passports only, with a blank line in between, and the SAME formatting as the original.
 
-5. **There is a test case that uses a different input file. Can I see it?** Nope! The different input file has the same format as the one provided above, it just has fewer items. Your code should be able to handle ANY input file with the same format. If it can't, that probably means you hardcoded something. One of the reasons that engineers write code is to open, process, and output data from files. If you have to process 100+ files of the same format, you're going to want one program to work for all of them. You really don't want 100+ programs. Trust me, I know from experience.
+5. **There is a test case that uses a different input file. Can I see it?** Nope! The different input file has the same format as the one provided above, it just has more passports. Your code should be able to handle ANY input file with the same format. If it can't, that probably means you hardcoded something. One of the reasons that engineers write code is to open, process, and output data from files. If you have to process 100+ files of the same format, you're going to want one program to work for all of them. You really don't want 100+ programs. Trust me, I know from experience.
 
-6. **Do I need to submit my `valid_passports.txt` and `valid_passports2.txt` files?** Nope! The autograding code on Gradescope will run your submitted `passport_checker.py` and `passport_checker2.py` codes, create the output files that your code (should) generate, then check them. If you submit txt files, they will just be ignored.
+6. **Do I need to submit my `valid_passports.txt` and `valid_passports2.txt` files?** Nope! The autograding code on Gradescope will run your submitted `passport_checker.py` and `passport_checker2.py` codes, create the output files that your code (should) generate, then check them. If you submit txt files, the autograder will not run.
 
 7. **This problem is so much fun! How do you come up with these?** This particular problem is a modified version of a problem from [Advent of Code 2020](https://adventofcode.com/2020). Yes, I solve coding problems for fun in my free time. If you're interested in majoring/minoring in computer science or any computational engineering field, I highly recommend trying it out!
 
